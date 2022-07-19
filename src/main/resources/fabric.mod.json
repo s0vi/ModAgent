@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "ModAgent",
+  "version": "${version}",
+  "name": "ModAgent",
+  "description": "A very, very hacky class to load mods dangerously. Not recommended.",
+  "authors": [
+    "s0vi"
+  ],
+  "contact": {
+    "website": "s0vi.dev",
+    "repo": "https://github.com/s0vi/ModAgent"
+  },
+  "license": "MIT",
+  "icon": "assets/ModAgent/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "dev.s0vi.modagent.client.ModAgentClient"
+    ],
+    "main": [
+      "dev.s0vi.modagent.ModAgent"
+    ]
+  },
+  "mixins": [
+    "ModAgent.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.8",
+    "fabric": "*",
+    "minecraft": "1.19"
+  }
+}
