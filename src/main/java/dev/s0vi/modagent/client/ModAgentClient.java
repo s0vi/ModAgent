@@ -18,10 +18,11 @@ public class ModAgentClient implements ClientModInitializer, PreLaunchEntrypoint
 
     @Override
     public void onInitializeClient() {
-        displayWarning();
 
-        UNLOADED_MODS = FabricLoader.getInstance().getGameDir().resolve("/modagent");
     }
 
+    @Override
+    public void onPreLaunch() {
 
+    }
 }

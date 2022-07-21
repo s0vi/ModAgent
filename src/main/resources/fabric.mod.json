@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "ModAgent",
+  "id": "modagent",
   "version": "${version}",
   "name": "ModAgent",
   "description": "A very, very hacky class to load mods dangerously. Not recommended.",

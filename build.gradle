@@ -63,6 +63,13 @@ jar {
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}" }
     }
+    manifest {
+        attributes(
+                "Agent-Class": "dev.s0vi.modagent.instrument.InstrumentationAgent",
+                "Can-Redefine-Classes": true,
+                "Can-Retransform-Classes": true
+        )
+    }
 }
 
 // configure the maven publication

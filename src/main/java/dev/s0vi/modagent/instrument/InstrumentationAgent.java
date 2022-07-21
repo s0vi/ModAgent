@@ -5,6 +5,9 @@ import com.sun.tools.attach.AgentLoadException;
 import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.VirtualMachine;
 import dev.s0vi.modagent.ModAgent;
+import dev.s0vi.modagent.instrument.transformer.KnotClassLoaderInterfaceTransformer;
+import dev.s0vi.modagent.instrument.transformer.KnotTransformer;
+import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
@@ -13,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InstrumentationAgent {
-    //Important objects, instances of which obtained through instrumentation.
-
     private static final List<Path> modsToLoad = new ArrayList<>();
     private static final Path agentFile = Path.of("TBD");
 
@@ -22,7 +23,9 @@ public class InstrumentationAgent {
         modsToLoad.add(p);
     }
 
-    public static void reloadMods() {
+    private static final ClassLoader classLoader = FabricLoader.getInstance().getClass().getClassLoader();
+
+    public static void transform() {
         try {
             VirtualMachine jvm = VirtualMachine.attach(getPID());
             jvm.loadAgent(agentFile.toFile().getAbsolutePath());
@@ -48,7 +51,11 @@ public class InstrumentationAgent {
 
     public static void agentmain(String agentArgs, Instrumentation inst) {
         INFO("Agentmain method called");
-        inst.
+        INFO("Modifying KnotClassLoaderInterface");
+        inst.addTransformer(new KnotClassLoaderInterfaceTransformer("net.fabricmc.loader.impl.launch.knot.KnotClassLoaderInterface", classLoader), true);
+        INFO("Modifying Knot... things could go very wrong right now!");
+        inst.addTransformer(new KnotTransformer("net.fabricmc.loader.impl.launch.knot.Knot", classLoader), true);
+//        inst.retransformClasses();
     }
 
     private static void INFO(String msg) {

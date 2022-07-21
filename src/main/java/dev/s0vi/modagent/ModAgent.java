@@ -1,5 +1,6 @@
 package dev.s0vi.modagent;
 
+import dev.s0vi.modagent.instrument.InstrumentationAgent;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
@@ -17,6 +18,8 @@ public class ModAgent implements ModInitializer, PreLaunchEntrypoint {
     @Override
     public void onInitialize() {
         UNLOADED_MODS = FabricLoader.getInstance().getGameDir().resolve("/modagent");
+        LOGGER.info("Trying to load instrumentation agent.");
+        InstrumentationAgent.transform();
     }
 
     @Override

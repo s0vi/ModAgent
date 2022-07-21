@@ -1,10 +1,10 @@
 package dev.s0vi.modagent.instrument.transformer;
 
 import dev.s0vi.modagent.ModAgent;
-import javassist.ClassPool;
-import javassist.CtClass;
+import javassist.*;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
@@ -32,13 +32,16 @@ public class KnotClassLoaderInterfaceTransformer implements ClassFileTransformer
 
         if(className.equals(finalTargetClassName) && loader.equals(targetClassLoader)) {
             LOGGER.info("Transforming class Knot");
-        }
+            try {
+                ClassPool cp = ClassPool.getDefault();
+                CtClass cc = cp.get(targetClassName);
 
-        try {
-            ClassPool cp = ClassPool.getDefault();
-            CtClass cc = cp.get(targetClassName);
+                cc.setModifiers(Modifier.setPublic(cc.getModifiers()));
 
-            cc.
+                cc.toBytecode();
+            } catch (NotFoundException | IOException | CannotCompileException e) {
+                throw new RuntimeException(e);
+            }
         }
         return byteCode;
     }
